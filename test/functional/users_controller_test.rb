@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
+  include UsersHelper
+
   setup do
     @user = users(:one)
     @drink = drinks(:one)
@@ -19,7 +21,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should create user" do
-    assert_difference('User.count') do
+    assert_difference('User.count', 1) do
       post :create, params: {user: { balance: @user.balance, name: @user.name }}
     end
     assert_redirected_to user_path(assigns(:user))
@@ -63,7 +65,7 @@ class UsersControllerTest < ActionController::TestCase
       get :buy, params: {id: @user, drink: @drink}
     end
     assert_equal -@drink.price, Audit.first.difference
-    assert_redirected_to users_path
+    assert_redirected_to redirect_path(@user)
   end
 
   test "buy resulting in a negative balance" do
@@ -77,9 +79,8 @@ class UsersControllerTest < ActionController::TestCase
   test "buy unavailable drink" do
     assert_equal Drink.find(drinks(:two).id).active, false
     get :buy, params: {id: @user, drink: drinks(:two)}
-    assert_equal Drink.find(drinks(:two).id).active, true
     assert_equal -drinks(:two).price, Audit.first.difference
-    assert_redirected_to users_path
+    assert_redirected_to redirect_path(@user)
   end
   
   test "buy resulting in unidentifiable audit" do
@@ -102,7 +103,7 @@ class UsersControllerTest < ActionController::TestCase
       post :buy_barcode, params: {id: @user, barcode: @barcode}
     end
     assert_equal -@drink.price, Audit.first.difference
-    assert_redirected_to users_path
+    assert_redirected_to redirect_path(@user)
   end
   
   test "should fail to buy by non-existing barcode" do

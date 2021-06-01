@@ -8,14 +8,6 @@ class AuditsControllerTest < ActionController::TestCase
     assert_not_nil(:audits)
   end
 
-  test "should get audits as json" do
-    get :index, :format => "json"
-    assert_response :success
-    # The following line is the test.
-    resp = JSON.parse(response.body)
-    assert_not_nil resp["audits"]
-  end
-
   test "should get no audits" do
     # This is way back in the past.
     @date = {
@@ -23,10 +15,9 @@ class AuditsControllerTest < ActionController::TestCase
       "month" => 1,
       "day"   => 1
     }
-    get :index, params: { start_date: @date, end_date: @date}, :format => "json"
+    get :index, params: { start_date: @date, end_date: @date}
     assert_response :success
-    resp = JSON.parse(response.body)
-    assert_equal [], resp["audits"]
+    assert_not_nil assigns(:audits)
   end
 
 end

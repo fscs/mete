@@ -1,0 +1,52 @@
+version: "3"
+
+networks:
+  appservers:
+
+volumes:
+  system:
+  backup:
+  database:
+
+services:
+  db:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_PASSWORD: mete
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      appservers:
+        aliases:
+          - db
+
+  db-backup:
+    image: nomaster/postgres-backup
+    environment:
+      PGPASSWORD: mete
+    volumes:
+      - backup:/backup
+    restart: on-failure
+    networks:
+      appservers:
+    depends_on:
+      - db
+
+  backend:
+    environment:
+      RAILS_ENV: production
+      SENTRY_DSN:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: chaosdorf/mete
+    build: .
+    volumes:
+      - system:/app/public/system
+    restart: on-failure
+    networks:
+      appservers:
+        aliases:
+          - app
+    depends_on:
+      - db

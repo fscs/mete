@@ -1,7 +1,19 @@
 - model_class = User
 - content_for :actions do
-  %li
-    = link_to 'new user', [:new, :user]
+  %li.nav-item
+    = link_to 'new user', [:new, :user], class: "nav-link"
 
+.user-filter
+  .btn-group
+    %a.btn{href: "#0", class: "user-filter-0"} #
+    - ('a'..'z').each do |a|
+      %a.btn{href: "##{a}", class: "user-filter-#{a}"}= a
+.row
 .row
   = render @users
+
+- content_for :footer do
+  = javascript_include_tag "users"
+  %noscript
+    %style .user { display: initial; }
+    %style .user-filter { display: none; }
