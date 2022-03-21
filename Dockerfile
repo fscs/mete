@@ -6,6 +6,7 @@ WORKDIR /app
 ENV RAILS_ENV=production
 RUN chown -R app:app /app
 USER app
+RUN bundle update mimemagic
 RUN bundle install && bundle exec rake assets:precompile
 CMD bundle exec unicorn
 EXPOSE 8080
