@@ -1,13 +1,12 @@
 class AuditsController < ApplicationController
   # GET /audits
-  # GET /audits.json
   def index
     if params[:start_date] and params[:end_date]
       @start_date = parse_date params[:start_date]
       @end_date = parse_date params[:end_date]
     else
-      # If no range is specified, show audits from the current year.
-      @start_date = Date.new(Date.tomorrow.year)
+      # If no range is specified, show audits from the last 14 days.
+      @start_date = Date.today - 14
       @end_date  = Date.tomorrow
     end
     if params[:user]
@@ -21,16 +20,7 @@ class AuditsController < ApplicationController
     @sum = @audits.sum(:difference)
     @payments_sum = @audits.payments.sum(:difference).abs
     @deposits_sum = @audits.deposits.sum(:difference)
-
-    respond_to do |format|
-      format.html #index.html.haml
-      format.json { render json: {
-        :sum => @sum,
-        :payments_sum => @payments_sum,
-        :deposits_sum => @deposits_sum,
-        :audits => @audits
-      }}
-    end
+    # index.html.haml
   end
 
   private

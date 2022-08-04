@@ -1,26 +1,24 @@
 - model_class = Barcode
 - content_for :actions do
-  %li
-    = link_to 'new barcode', [:new, :barcode]
+  %li.nav-item
+    = link_to 'new barcode', [:new, :barcode], class: "nav-link"
 
 .page-header
   %h1
     Barcodes.
     %small Here they are.
 
-%table.table
+%table.table.table-striped.table-bordered.table-dark
   %thead
     %tr
-      %th= model_class.human_attribute_name(:id)
-      %th= model_class.human_attribute_name(:drink)
-      %th Delete?
+      %th{:scope => "col"}= model_class.human_attribute_name(:id)
+      %th{:scope => "col"}= model_class.human_attribute_name(:drink)
+      %th{:scope => "col"} Delete?
   %tbody
     - @barcodes.each do |barcode|
       %tr
-        %td= barcode.id
+        %th{:scope => "row"}= barcode.id
         %td
-          - drink = Drink.find_by(:id => barcode.drink)
-          = link_to drink do
-            = drink.name
+          = link_to_drink_if_exists barcode.drink
         %td
           = link_to 'delete', barcode, method: :delete, :data => {confirm: "Really delete this barcode?"}

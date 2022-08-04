@@ -8,7 +8,7 @@ Mete::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-  # Disable Rails's static files server (Apache or nginx will already do this)
+  # Enable Rails's static files server
   config.public_file_server.enabled = true
 
   # Compress JavaScripts and CSS

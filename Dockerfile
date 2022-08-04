@@ -1,11 +1,13 @@
-FROM ruby:2.4
-RUN groupadd -r app && useradd -r -d /app -g app app
-COPY . /app
+FROM ruby:2.6-alpine
+RUN apk --no-cache add nodejs git g++ make postgresql-dev sqlite-dev tzdata file imagemagick
 WORKDIR /app
-ENV RAILS_ENV=production
-VOLUME var
-RUN chown -R app:app /app
-USER app
-RUN bundle install && bundle exec rake assets:precompile
-CMD bundle exec unicorn
-EXPOSE 8080
+COPY Gemfile /app
+COPY Gemfile.lock /app
+VOLUME /app/public/system
+RUN bundle config --local build.sassc --disable-march-tune-native
+RUN bundle install
+COPY . /app
+RUN bundle exec rake assets:precompile
+ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["rails", "server", "--binding", "[::]", "--port", "80"]
+EXPOSE 80
