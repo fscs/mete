@@ -18,14 +18,14 @@
         - else
           = "Are you sure?"
       .modal-body
-        -# = link_to(generate_buy_path(user, drink, true) || '#', method: :patch) do
-        -#   .panel.panel-default.text-center.buybutton
-        -#     .panel-body
-        -#       %h2
-        -#         - if user
-        -#           %strong In Bar
-        -#         - else
-        -#           %strong Yes
+        = link_to(generate_buy_path(user, drink, false) || '#', method: :patch) do
+          .panel.panel-default.text-center.buybutton
+            .panel-body
+              %h2
+                - if user
+                  %strong In Bar
+                - else
+                  %strong Yes
         - if user
           = link_to(buy_user_path(user, :drink => drink.id, :bar => false) || '#', method: :patch) do
             .panel.panel-default.text-center.buybutton
