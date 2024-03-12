@@ -7,12 +7,12 @@ class AuditsController < ApplicationController
   # GET /audits
   def index
     if params[:start_date] and params[:end_date]
-      @start_date = parse_date params[:start_date]
-      @end_date = parse_date params[:end_date]
+      @start_date = DateTime.iso8601(params[:start_date])
+      @end_date = DateTime.iso8601(params[:end_date])
     else
       # If no range is specified, show audits from the current year.
-      @start_date = Date.new(Date.tomorrow.year)
-      @end_date  = Date.tomorrow
+      @start_date = DateTime.now()
+      @end_date  = DateTime.now()
     end
     if params[:user]
       @user = User.find(params[:user])
@@ -23,13 +23,13 @@ class AuditsController < ApplicationController
     end
 
     @sum = @audits.sum(:difference)
-    @bank_difference = @audits.where(drink: nil).sum(:bank_difference)
+    @bank_difference = @audits.where(drink: 0).sum(:bank_difference)
 
     respond_to do |format|
       format.html #index.html.haml
       format.json { render json: {
-        :sum => @sum
-        :bank_difference => @bank_difference
+        :sum => @sum,
+        :bank_difference => @bank_difference,
         :audits => @audits
       }}
     end
@@ -68,6 +68,6 @@ class AuditsController < ApplicationController
   private
 
   def parse_date data
-    return Date.civil(data[:year].to_i, data[:month].to_i, data[:day].to_i)
+    return DateTime.civil(data[:year].to_i, data[:month].to_i, data[:day].to_i)
   end
 end
