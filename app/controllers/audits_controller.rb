@@ -23,15 +23,13 @@ class AuditsController < ApplicationController
     end
 
     @sum = @audits.sum(:difference)
-    @payments_sum = @audits.payments.sum(:difference).abs
-    @deposits_sum = @audits.deposits.sum(:difference)
+    @bank_difference = @audits.where(drink: nil).sum(:bank_difference)
 
     respond_to do |format|
       format.html #index.html.haml
       format.json { render json: {
-        :sum => @sum,
-        :payments_sum => @payments_sum,
-        :deposits_sum => @deposits_sum,
+        :sum => @sum
+        :bank_difference => @bank_difference
         :audits => @audits
       }}
     end

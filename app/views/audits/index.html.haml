@@ -24,6 +24,10 @@
   = @sum
 
 %p
+  %strong Bank Register Balance:
+  = @bank_difference
+
+%p
   %strong
     = "Showing data from #{@start_date} to #{@end_date} for "
     = @user.nil? ? "all users" : "user #{@user.name}"
