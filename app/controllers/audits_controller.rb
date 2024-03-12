@@ -23,8 +23,8 @@ class AuditsController < ApplicationController
     end
 
     @sum = @audits.sum(:difference)
-    #@payments_sum = @audits.payments.sum(:difference).abs
-    #@deposits_sum = @audits.deposits.sum(:difference)
+    @payments_sum = @audits.payments.sum(:difference).abs
+    @deposits_sum = @audits.deposits.sum(:difference)
 
     respond_to do |format|
       format.html #index.html.haml
