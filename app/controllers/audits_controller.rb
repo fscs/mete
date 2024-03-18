@@ -11,8 +11,8 @@ class AuditsController < ApplicationController
       @end_date = DateTime.iso8601(params[:end_date])
     else
       # If no range is specified, show audits from the current year.
-      @start_date = DateTime.now()
-      @end_date  = DateTime.now()
+      @start_date = DateTime.now() - 365
+      @end_date  = DateTime.now() 
     end
     if params[:user]
       @user = User.find(params[:user])
