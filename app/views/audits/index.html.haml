@@ -5,10 +5,10 @@
 = form_tag({}, { :class => 'form-horizontal', :method => :get }) do
   .control-group
     = label_tag :end_date, "from", class: 'control-label'
-    %input{:type => "datetime-local", :name => "start_date", :value => @start_date.to_s}
+    %input{:type => "datetime-local", :name => "start_date", :value => @start_date.strftime("%FT%R)}
   .control-group
     = label_tag :end_date, "until", class: 'control-label'
-    %input{:type => "datetime-local", :name => "end_date", :value => @end_date.to_s}
+    %input{:type => "datetime-local", :name => "end_date", :value => @end_date.strftime("%FT%R)}
   - unless @user.nil?
     %input{:type => "hidden", :name => "user", :value => @user.id}
   .control-group
