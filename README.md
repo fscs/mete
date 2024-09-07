@@ -5,7 +5,7 @@
 [![test coverage](https://codeclimate.com/github/chaosdorf/mete/badges/coverage.svg)](https://codeclimate.com/github/chaosdorf/mete/coverage)
 
 # Matekasse
-
+ 
 Keep track of your donations!
 
 This web application is for places where people can donate to get a drink. Just
